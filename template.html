@@ -30,22 +30,17 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
         crossorigin="anonymous"></script>
     <div class="container">
-
         <div class="row">
             <div id="temp" class="col-6">
                 <div id="news">
                     <p>
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                        <button class="btn btn-secondary btn-lg" type="button" data-toggle="collapse" data-target="#collapseExample"
                             aria-expanded="false" aria-controls="collapseExample">
-                            パトカー追突から3台絡む事故　20代巡査が脇見運転
+                            {news_title}
                         </button>
                     </p>
                     <div class="collapse" id="collapseExample">
-                        <div class="card card-body">
-                            事故の原因はパトカーの脇見運転でした。
-                            警察によりますと、12日午前11時ごろ、京都府長岡京市で巡回中のパトカーが前を走っていたワゴン車に追突しました。その弾みでワゴン車が前を走る乗用車に追突。合わせて車3台が絡む事故となりました。このうち、乗用車にいた母親（55）と息子（19）が首の痛みを訴えて病院に搬送されました。パトカーは男性巡査（20代）が運転し、助手席には男性警部補（40代）が乗っていましたが、直前に別の交通事故の現場に遭遇して気を取られ、脇見運転してしまったと話しているそうです。
-
-                        </div>
+                        <div class="card card-body">{news_desc}</div>
                     </div>
                 </div>
                 <ul class="list-group list-group-flush">

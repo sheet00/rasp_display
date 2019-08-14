@@ -18,15 +18,10 @@ body {
 	font-size: inherit;
 }
 
-#update{
-	text-align: right;
-	margin-right: 20px;
-}
-
 /*news*/
 #news{
 	margin-bottom: 60px;
-	font-size: 15px;
+	font-size: 20px;
 }
 
 /*temp*/
@@ -47,15 +42,19 @@ span.val{
 .weather-2day__temp > *,
 .weather-2day__rainy table th,
 .weather-2day__rainy table td,{
-	font-size: 180%;
-}
-
-
-#weather .comment p{
-	font-size: 140%;
+	font-size: 200%;
 }
 
 .weather-2day__rainy p,
 .weather-2day__temp > * span{
 	font-size: 100%;
+}
+
+#weather .comment p{
+	font-size: 140%;
+}
+
+#update{
+	text-align: right;
+	margin-right: 20px;
 }
