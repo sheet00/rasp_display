@@ -15,7 +15,12 @@ body {
 .btn{
 	width: inherit;
 	max-width: inherit;
-	font-size: inherit;
+}
+
+.btn-lg{
+	font-size: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
 /*news*/
