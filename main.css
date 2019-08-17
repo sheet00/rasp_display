@@ -57,9 +57,16 @@ span.val{
 
 #weather .comment p{
 	font-size: 140%;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+
+}
+
+/* graph */
+#graph{
+	height: 600px;
 }
 
 #update{
 	text-align: right;
-	margin-right: 20px;
 }

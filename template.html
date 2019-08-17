@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    {reload}
+    {js}
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -29,6 +29,17 @@
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
         crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="main.js"></script>
+
+    <div class='d-none'>
+        <div id='json_temps'>{json_temps}</div>
+        <div id='json_hums'>{json_hums}</div>
+        <div id='json_created_at'>{json_created_at}</div>
+    </div>
+
+    <div id="graph"></div>
+
     <div class="container">
         <div class="row">
             <div id="temp" class="col-6">
@@ -55,10 +66,11 @@
             </div>
             <div id="weather" class="col-6">
                 {weather}
+                <div id="update">{date}</div>
             </div>
         </div>
     </div>
-    <div id="update">{date}</div>
+
 
 
 </body>
