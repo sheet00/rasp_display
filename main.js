@@ -16,15 +16,22 @@ main.reload = function (wait_second) {
     setTimeout(function () { window.location.reload(); }, second);
 };
 
-main.auto_toggle = function (switch_second) {
+main.auto_toggle = async function (switch_second) {
     var second = switch_second * 1000
     //wait
-    main.loopSleep(1,switch_second,null);
+    await main.sleep(second);
+
     //toggle
     main.loopSleep(10, second, function (i) {
         $('#graph').toggle();
     })
 };
+
+main.sleep = function sleep(msec) {
+   return new Promise(function(resolve) {
+      setTimeout(function() {resolve()}, msec);
+   })
+}
 
 main.loopSleep = function (_loopLimit, _interval, _mainFunc) {
     var loopLimit = _loopLimit;
