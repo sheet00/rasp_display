@@ -44,22 +44,10 @@ span.val{
 }
 
 /*weather*/
-.weather-2day__temp > *,
-.weather-2day__rainy table th,
-.weather-2day__rainy table td,{
-	font-size: 200%;
-}
-
-.weather-2day__rainy p,
-.weather-2day__temp > * span{
-	font-size: 100%;
-}
-
 #weather .comment p{
-	font-size: 140%;
+	font-size: 130%;
 	margin-bottom: 0px;
 	padding-bottom: 0px;
-
 }
 
 /* graph */
