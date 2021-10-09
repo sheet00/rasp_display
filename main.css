@@ -36,7 +36,7 @@ span.target{
 
 span.val{
 	margin-left: 20px;
-	font-size: 110px;
+	font-size: 90px;
 }
 
 #temp li.list-group-item{
@@ -44,6 +44,13 @@ span.val{
 }
 
 /*weather*/
+#weather .wTable{
+	padding: 0px;
+}
+#weather .wTable .badge,#weather p.temp__h,#weather p.temp__l, #weather p.text, #weather span.unit, #weather .wTable__item{
+	font-size: 17px;
+}
+
 #weather .comment p{
 	font-size: 130%;
 	margin-bottom: 0px;
