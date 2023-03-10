@@ -64,7 +64,11 @@ span.val{
 	display: none;
 }
 
-#weather div.switchContent__item[data-num="3"]{
+#weather div.switchContent__item[data-num="4"]{
+	display: none;
+}
+
+#weather div.switchContent__item:nth-child(2){
 	display: none;
 }
 
