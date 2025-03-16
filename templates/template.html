@@ -75,8 +75,8 @@
           <div class="card">
             <div class="card-header">室温</div>
             <div class="card-body">
-              <p class="dht-info">温度: {{ dht_data.temp|int }} °C</p>
-              <p class="dht-info">湿度: {{ (dht_data.hum * 100)|int }} %</p>
+              <p class="dht-info m-0">温度: {{ dht_data.temp|int }} °C</p>
+              <p class="dht-info m-0">湿度: {{ (dht_data.hum * 100)|int }} %</p>
             </div>
           </div>
         </div>
@@ -84,11 +84,15 @@
           <div class="card">
             <div class="card-header">{{ weather_data.title }}</div>
             <div class="card-body">
-              <p class="card-text">{{ weather_data.description.text }}</p>
+              <p class="card-text weather_description">
+                {{ weather_data.description.text }}
+              </p>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="text-end">{{ date }}</div>
     </div>
   </body>
 </html>
