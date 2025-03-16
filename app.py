@@ -32,28 +32,24 @@ def get_dht():
 
 
 def get_weather():
-    api_key = os.environ.get('OPENWEATHER_API_KEY')
-    base_url = "http://api.openweathermap.org/data/2.5/weather"
-    city = os.environ.get('CITY')
-    
-    url = f"{base_url}?q={city}&appid={api_key}&units=metric"
+    city_code = os.environ.get('CITY_CODE')
+    base_url = "https://weather.tsukumijima.net/api/forecast"
+    url = f"{base_url}?city={city_code}"
     response = requests.get(url)
     data = response.json()
 
     ic(data)
-    
+
     if response.status_code == 200:
-        weather_description = data['weather'][0]['description']
-        temperature = data['main']['temp']
-        return f"{weather_description}, {temperature}°C"
+        return data
     else:
-        return "取得不可"
+        return {}
 
 @app.route('/')
 def index():
     dht_data = get_dht()
     weather_data = get_weather()
-    return render_template('template.html', temperature=dht_data['temp'], humidity=dht_data['hum'], created_at=dht_data['created_at'], weather=weather_data)
+    return render_template('template.html', dht_data=dht_data, weather_data=weather_data)
 
 
 if __name__ == '__main__':
