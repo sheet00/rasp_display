@@ -1,70 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
-
-<head>
+  <head>
     <title>{{ date }}</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='main.css') }}"
+    />
     <script src="static/main.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="row align-items-start mt-3">
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">温度</div>
-                    <div class="card-body">
-                        <p class="dht-info">温度: {{ dht_data.temp|int }} °C</p>
-                        <p class="dht-info">湿度: {{ dht_data.hum|int }} %</p>
-                    </div>
-                </div>
+      <div class="row align-items-start mt-3 forecast">
+        {% for forecast in weather_data.forecasts[:2] %}
+        <div class="col">
+          <div class="card">
+            <div class="card-header">
+              {{ forecast.telop }} {{ forecast.dateLabel }}
             </div>
 
-            {% for forecast in weather_data.forecasts[:3] %}
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">{{ forecast.telop }} {{ forecast.dateLabel }}</div>
-
-                    <img src="{{ forecast.image.url }}" class="forecast_image" alt="{{ forecast.image.title }}">
-                    <div class="card-body">
-                        <p class="card-text m-0 nowarp">最高気温: {{
-                            forecast.temperature.max.celsius }} °C</p>
-                        <p class="card-text m-0 nowarp">最低気温: {{
-                            forecast.temperature.min.celsius }} °C</p>
-                        <div class="">
-                            <p class="card-text m-0">0-6時の降水確率: {{ forecast.chanceOfRain.T00_06 }}</p>
-                            <p class="card-text m-0">6-12時の降水確率: {{ forecast.chanceOfRain.T06_12 }}</p>
-                            <p class="card-text m-0">12-18時の降水確率: {{ forecast.chanceOfRain.T12_18 }}</p>
-                            <p class="card-text m-0">18-24時の降水確率: {{ forecast.chanceOfRain.T18_24 }}</p>
-                        </div>
-                    </div>
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <img
+                  src="{{ forecast.image.url }}"
+                  class="forecast_image"
+                  alt="{{ forecast.image.title }}"
+                />
+                <div>
+                  <p class="card-text m-0 nowarp">
+                    最高気温: {{ forecast.temperature.max.celsius }} °C
+                  </p>
+                  <p class="card-text m-0 nowarp">
+                    最低気温: {{ forecast.temperature.min.celsius }} °C
+                  </p>
                 </div>
+              </div>
+              <div class="chance_of_rain">
+                <p class="card-text m-0">
+                  0-6時の降水確率: {{ forecast.chanceOfRain.T00_06 }}
+                </p>
+                <p class="card-text m-0">
+                  6-12時の降水確率: {{ forecast.chanceOfRain.T06_12 }}
+                </p>
+                <p class="card-text m-0">
+                  12-18時の降水確率: {{ forecast.chanceOfRain.T12_18 }}
+                </p>
+                <p class="card-text m-0">
+                  18-24時の降水確率: {{ forecast.chanceOfRain.T18_24 }}
+                </p>
+              </div>
             </div>
-            {% endfor %}
+          </div>
         </div>
+        {% endfor %}
+      </div>
 
-        <div class="card mt-3">
+      <div class="row mt-3">
+        <div class="col-3">
+          <div class="card">
+            <div class="card-header">温度</div>
+            <div class="card-body">
+              <p class="dht-info">温度: {{ dht_data.temp|int }} °C</p>
+              <p class="dht-info">湿度: {{ (dht_data.hum * 100)|int }} %</p>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
             <div class="card-header">{{ weather_data.title }}</div>
             <div class="card-body">
-                <p class="card-text">{{ weather_data.description.text }}</p>
+              <p class="card-text">{{ weather_data.description.text }}</p>
             </div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-        crossorigin="anonymous"></script>
-</body>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+      integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

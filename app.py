@@ -46,7 +46,7 @@ def get_weather():
     response = requests.get(url)
     data = response.json()
 
-    # ic(data)
+    ic(data)
 
     if response.status_code == 200:
         return data
