@@ -3,8 +3,9 @@ import os
 import pymysql
 import requests
 from icecream import ic
+import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 
 def get_dht():
@@ -49,7 +50,7 @@ def get_weather():
 def index():
     dht_data = get_dht()
     weather_data = get_weather()
-    return render_template('template.html', dht_data=dht_data, weather_data=weather_data)
+    return render_template('template.html', dht_data=dht_data, weather_data=weather_data, date=datetime.datetime.now())
 
 
 if __name__ == '__main__':

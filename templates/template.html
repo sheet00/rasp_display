@@ -4,21 +4,51 @@
 <head>
     <title>{{ date }}</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="main.css">
-    <script src="main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+    <script src="static/main.js"></script>
 </head>
 
 <body>
-    <h1>現在の部屋の温度</h1>
-    <p>温度: {{ dht_data.temp }} °C</p>
-    <p>湿度: {{ dht_data.hum }} %</p>
-    <p>最新取得日時: {{ dht_data.created_at }}</p>
-    <h1>天気予報</h1>
-    <p>日付: {{ weather_data.forecasts[0].date }}</p>
-    <p>日付ラベル: {{ weather_data.forecasts[0].dateLabel }}</p>
-    <p>天気: {{ weather_data.forecasts[0].telop }}</p>
-    <p>最高気温: {{ weather_data.forecasts[0].temperature.max.celsius }} °C</p>
-    <img src="{{ weather_data.forecasts[0].image.url }}" alt="{{ weather_data.forecasts[0].image.title }}">
+    <div class="container">
+        <h1>現在の部屋の温度</h1>
+        <p>温度: {{ dht_data.temp }} °C</p>
+        <p>湿度: {{ dht_data.hum }} %</p>
+        <p>最新取得日時: {{ dht_data.created_at }}</p>
+
+        <h1>{{ weather_data.title }}</h1>
+        <p>{{ weather_data.description.text }}</p>
+
+        <div class="d-flex flex-row">
+            {% for forecast in weather_data.forecasts %}
+            <div class="card">
+                <img src="{{ forecast.image.url }}" class="forecast_image" alt="{{ forecast.image.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ forecast.telop }} {{ forecast.dateLabel }} {{ forecast.date }}</h5>
+                    <p class="card-text">最高気温: {{ forecast.temperature.max.celsius }} °C</p>
+                    <p class="card-text">最低気温: {{ forecast.temperature.min.celsius }} °C</p>
+                    <p class="card-text">0-6時の降水確率: {{ forecast.chanceOfRain.T00_06 }}</p>
+                    <p class="card-text">6-12時の降水確率: {{ forecast.chanceOfRain.T06_12 }}</p>
+                    <p class="card-text">12-18時の降水確率: {{ forecast.chanceOfRain.T12_18 }}</p>
+                    <p class="card-text">18-24時の降水確率: {{ forecast.chanceOfRain.T18_24 }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+        integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
