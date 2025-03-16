@@ -9,6 +9,9 @@ app = Flask(__name__, static_folder='static')
 
 
 def get_dht():
+    """
+    部屋の温度取得
+    """
     conn = pymysql.connect(
         host=os.environ.get('DB_HOST'),
         user=os.environ.get('DB_USER'),
@@ -33,13 +36,17 @@ def get_dht():
 
 
 def get_weather():
+    """
+    お天気情報取得
+    """
+
     city_code = os.environ.get('CITY_CODE')
     base_url = "https://weather.tsukumijima.net/api/forecast"
     url = f"{base_url}?city={city_code}"
     response = requests.get(url)
     data = response.json()
 
-    ic(data)
+    # ic(data)
 
     if response.status_code == 200:
         return data

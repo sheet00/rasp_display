@@ -11,35 +11,51 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" type="text/css" href="static/main.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <script src="static/main.js"></script>
 </head>
 
 <body>
     <div class="container">
-        <h1>現在の部屋の温度</h1>
-        <p>温度: {{ dht_data.temp }} °C</p>
-        <p>湿度: {{ dht_data.hum }} %</p>
-        <p>最新取得日時: {{ dht_data.created_at }}</p>
+        <div class="row align-items-start mt-3">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">温度</div>
+                    <div class="card-body">
+                        <p class="dht-info">温度: {{ dht_data.temp|int }} °C</p>
+                        <p class="dht-info">湿度: {{ dht_data.hum|int }} %</p>
+                    </div>
+                </div>
+            </div>
 
-        <h1>{{ weather_data.title }}</h1>
-        <p>{{ weather_data.description.text }}</p>
+            {% for forecast in weather_data.forecasts[:3] %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">{{ forecast.telop }} {{ forecast.dateLabel }}</div>
 
-        <div class="d-flex flex-row">
-            {% for forecast in weather_data.forecasts %}
-            <div class="card">
-                <img src="{{ forecast.image.url }}" class="forecast_image" alt="{{ forecast.image.title }}">
-                <div class="card-body">
-                    <h5 class="card-title">{{ forecast.telop }} {{ forecast.dateLabel }} {{ forecast.date }}</h5>
-                    <p class="card-text">最高気温: {{ forecast.temperature.max.celsius }} °C</p>
-                    <p class="card-text">最低気温: {{ forecast.temperature.min.celsius }} °C</p>
-                    <p class="card-text">0-6時の降水確率: {{ forecast.chanceOfRain.T00_06 }}</p>
-                    <p class="card-text">6-12時の降水確率: {{ forecast.chanceOfRain.T06_12 }}</p>
-                    <p class="card-text">12-18時の降水確率: {{ forecast.chanceOfRain.T12_18 }}</p>
-                    <p class="card-text">18-24時の降水確率: {{ forecast.chanceOfRain.T18_24 }}</p>
+                    <img src="{{ forecast.image.url }}" class="forecast_image" alt="{{ forecast.image.title }}">
+                    <div class="card-body">
+                        <p class="card-text m-0 nowarp">最高気温: {{
+                            forecast.temperature.max.celsius }} °C</p>
+                        <p class="card-text m-0 nowarp">最低気温: {{
+                            forecast.temperature.min.celsius }} °C</p>
+                        <div class="">
+                            <p class="card-text m-0">0-6時の降水確率: {{ forecast.chanceOfRain.T00_06 }}</p>
+                            <p class="card-text m-0">6-12時の降水確率: {{ forecast.chanceOfRain.T06_12 }}</p>
+                            <p class="card-text m-0">12-18時の降水確率: {{ forecast.chanceOfRain.T12_18 }}</p>
+                            <p class="card-text m-0">18-24時の降水確率: {{ forecast.chanceOfRain.T18_24 }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">{{ weather_data.title }}</div>
+            <div class="card-body">
+                <p class="card-text">{{ weather_data.description.text }}</p>
+            </div>
         </div>
     </div>
 

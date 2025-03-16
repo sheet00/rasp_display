@@ -1,3 +1,30 @@
-img.forecast_image {
+.dht-info {
+    font-size: 2rem;
+}
+
+.card {
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    background-color: #e9ecef;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
+.forecast_image {
     width: 100px;
+}
+
+.container {
+    max-width: 95%;
+}
+
+.nowarp {
+    white-space: nowrap;
 }
