@@ -1,5 +1,11 @@
 # rasp_display
 
+## 概要
+
+このシステムは、Flask で記述された Web アプリケーションです。
+
+部屋の温度と湿度をデータベースから取得し、Livedoor 天気 API および OpenWeather API から天気情報を取得して、それらの情報を `template.html` テンプレートに渡して表示します。
+
 # systemctl メモ
 
 ```
