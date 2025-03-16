@@ -45,3 +45,15 @@ https://openweathermap.org/forecast5
 # livedoor
 
 https://weather.tsukumijima.net/
+
+## 環境設定
+
+このアプリケーションは、以下の環境変数を必要とします。
+
+- `DB_HOST`: データベースのホスト名
+- `DB_USER`: データベースのユーザー名
+- `DB_PASSWORD`: データベースのパスワード
+- `DB_NAME`: データベース名
+- `CITY_CODE`: Livedoor 天気 API で使用する都市コード
+- `OPENWEATHER_API_KEY`: OpenWeather API キー
+- `OPENWEATHER_CITY_ID`: OpenWeather API で使用する都市 ID
