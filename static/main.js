@@ -1,7 +1,7 @@
 var main = {};
 
 main.init = function () {
-  main.reload(60);
+  main.reload(600);
 };
 
 main.reload = function (wait_second) {
