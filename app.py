@@ -104,10 +104,10 @@ def index():
     dht_data = get_dht()
     weather_livedoor = get_weather_livedoor()
     
-    return render_template('template.html', 
+    return render_template('template.html',
                         dht_data=dht_data,
                         weather_data=weather_livedoor,
-                        date=datetime.datetime.now())
+                        date=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 if __name__ == '__main__':
