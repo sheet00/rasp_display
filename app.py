@@ -39,6 +39,14 @@ def get_weather_livedoor():
     """
     お天気情報取得 livedoor
     """
+
+    def custom_date_label(forecast):
+        japanese_days = ["月", "火", "水", "木", "金", "土", "日"]
+        target_date = datetime.datetime.strptime(forecast['date'], '%Y-%m-%d')
+        day_of_week = target_date.strftime('%w')
+        date_label = f"{target_date.strftime('%d')}日({japanese_days[int(day_of_week)]})"
+        return date_label
+
     ic("-"*100)
     ic("get_weather_livedoor")
 
@@ -49,8 +57,10 @@ def get_weather_livedoor():
     data = response.json()
 
     ic(data['location'])
-
+    # ic(data['forecasts'][0])
     if response.status_code == 200:
+
+        # 最新温度取得
         weather_open_data = get_weather_open()
         if weather_open_data and 'list' in weather_open_data and len(weather_open_data['list']) > 0:
             # openweatherの最初の予報の最高気温と最低気温を取得
@@ -61,6 +71,14 @@ def get_weather_livedoor():
             if 'forecasts' in data and len(data['forecasts']) > 0:
                 data['forecasts'][0]['temperature']['max']['celsius'] = str(max_temp) if max_temp is not None else None
                 data['forecasts'][0]['temperature']['min']['celsius'] = str(min_temp) if min_temp is not None else None
+
+
+        # ラベル処理
+        for forecast in data['forecasts']:
+            forecast['custom_date_label'] = custom_date_label(forecast)
+
+
+
         return data
     else:
         return {}
