@@ -99,14 +99,35 @@ def get_weather_open():
     else:
         return {}
 
+def get_forecast_comment():
+    """
+    ウェザーニュース最新見解取得
+    """
+    from bs4 import BeautifulSoup
+    import requests
+    import os
+
+    url = os.environ.get('WEATHER_DESCRIPTION_URL')
+    response = requests.get(url)
+    response.raise_for_status()
+    soup = BeautifulSoup(response.content, 'html.parser')
+    forecast_comment = soup.find('div', class_='forecast-comment')
+    if not forecast_comment:
+        return "テキストが見つかりませんでした"
+    
+    description = forecast_comment.text
+    return description
+
 @app.route('/')
 def index():
     dht_data = get_dht()
     weather_livedoor = get_weather_livedoor()
-    
+    forecast_comment = get_forecast_comment()
+
     return render_template('template.html',
                         dht_data=dht_data,
                         weather_data=weather_livedoor,
+                        forecast_comment=forecast_comment,
                         date=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
