@@ -41,7 +41,7 @@ def get_weather_livedoor():
     """
 
     def custom_date_label(forecast):
-        japanese_days = ["月", "火", "水", "木", "金", "土", "日"]
+        japanese_days = ["日","月", "火", "水", "木", "金", "土"]
         target_date = datetime.datetime.strptime(forecast['date'], '%Y-%m-%d')
         day_of_week = target_date.strftime('%w')
         date_label = f"{target_date.strftime('%d')}日({japanese_days[int(day_of_week)]})"
