@@ -1,10 +1,15 @@
 from flask import Flask, render_template
 import os
-import pymysql
-import requests
-from icecream import ic
 import datetime
+import requests
+from dotenv import load_dotenv
+import pymysql
+from icecream import ic
+from bs4 import BeautifulSoup
 
+
+
+load_dotenv()
 app = Flask(__name__, static_folder='static')
 
 
@@ -121,9 +126,6 @@ def get_forecast_comment():
     """
     ウェザーニュース最新見解取得
     """
-    from bs4 import BeautifulSoup
-    import requests
-    import os
 
     url = os.environ.get('WEATHER_DESCRIPTION_URL')
     response = requests.get(url)

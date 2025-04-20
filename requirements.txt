@@ -1,4 +1,7 @@
 flask
+python-dotenv
+
 pymysql
 requests
 icecream
+beautifulsoup4
