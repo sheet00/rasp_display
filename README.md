@@ -16,7 +16,7 @@ After=network.target
 [Service]
 User=pi
 WorkingDirectory=/home/pi/rasp_display
-ExecStart=/usr/bin/python3 /home/pi/rasp_display/app.py
+ExecStart=/home/pi/.pyenv/versions/3.13.3/bin/python /home/pi/rasp_display/app.py
 Restart=on-failure
 
 [Install]
@@ -24,19 +24,30 @@ WantedBy=multi-user.target
 ```
 
 ```
-sudo systemctl enable app.service
-sudo systemctl status app.service
+sudo systemctl enable python_app.service
+sudo systemctl status python_app.service
 ```
 
-# /home/display/start_kiosk.sh
+# start_kiosk.sh
+## 自動起動
+
+mkdir -p ~/.config/autostart
+cp /home/pi/rasp_display/kiosk/kiosk.desktop ~/.config/autostart/
 
 ```
-#!/bin/sh
-# 自動起動定義
-# /home/display/.config/lxsession/LXDE-pi/autostart
-chromium-browser --noerrdialogs --kiosk --incognito http://localhost:5000
+[Desktop Entry]
+Type=Application
+Name=My Script
+Exec=/home/pi/rasp_display/kiosk/start_kiosk.sh
+Comment=Run script on GUI login
+X-GNOME-Autostart-enabled=true
 
 ```
+
+## 自動ログイン
+
+`nano /etc/gdm3/custom.conf`
+
 
 # openweathermap
 
