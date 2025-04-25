@@ -29,6 +29,13 @@ sudo systemctl status python_app.service
 sudo systemctl restart python_app.service
 ```
 
+# 画面スリープオフ
+
+```
+sudo raspi-config
+Display Options -> D4 Screen Blanking disable
+```
+
 
 # openweathermap
 
