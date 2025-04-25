@@ -1,6 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=My Script
-Exec=/home/pi/rasp_display/kiosk/start_kiosk.sh
-Comment=Run script on GUI login
-X-GNOME-Autostart-enabled=true
