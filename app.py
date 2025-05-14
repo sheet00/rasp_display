@@ -17,28 +17,31 @@ def get_dht():
     """
     部屋の温度取得
     """
-    conn = pymysql.connect(
-        host=os.environ.get('DB_HOST'),
-        user=os.environ.get('DB_USER'),
-        password=os.environ.get('DB_PASSWORD'),
-        db=os.environ.get('DB_NAME'),
-        charset='utf8mb4',
-        cursorclass=pymysql.cursors.DictCursor
-    )
-    
-    with conn.cursor() as cursor:
-        sql = "SELECT temp, hum, created_at FROM temperature ORDER BY id DESC LIMIT 1"
-        cursor.execute(sql)
-        result = cursor.fetchone()
+    conn = None
+    try:
+        conn = pymysql.connect(
+            host=os.environ.get('DB_HOST'),
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD'),
+            db=os.environ.get('DB_NAME'),
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+        
+        with conn.cursor() as cursor:
+            sql = "SELECT temp, hum, created_at FROM temperature ORDER BY id DESC LIMIT 1"
+            cursor.execute(sql)
+            result = cursor.fetchone()
 
-        if result:
-            temp = result['temp']
-            hum = result['hum']
-            created_at = result['created_at']
-            return {"temp": temp, "hum": hum, "created_at": created_at}
-        else:
-            return {"temp": None, "hum": None, "created_at": None}
-
+            if result:
+                temp = result['temp']
+                hum = result['hum']
+                created_at = result['created_at']
+                return {"temp": temp, "hum": hum, "created_at": created_at}
+            else:
+                return {"temp": None, "hum": None, "created_at": None}
+    except Exception as e:
+        return {"temp": None, "hum": None, "created_at": None}
 
 def get_weather_livedoor():
     """
