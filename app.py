@@ -6,11 +6,24 @@ from dotenv import load_dotenv
 import pymysql
 from icecream import ic
 from bs4 import BeautifulSoup
+import logging
+import json
 
 
 
 load_dotenv()
 app = Flask(__name__, static_folder='static')
+
+# ログ設定
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('app.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 
 def get_dht():
@@ -155,4 +168,8 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    try:
+        logger.info("アプリケーション開始")
+        app.run(debug=True, host='0.0.0.0')
+    except Exception as e:
+        logger.error(f"アプリケーション実行エラー: {str(e)}", exc_info=True)
