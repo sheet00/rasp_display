@@ -1,6 +1,8 @@
 /work
 
-output.html
 .env
 .clinerules
 *.log
+
+.claude/
+.vscode/
