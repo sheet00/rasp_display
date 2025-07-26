@@ -156,20 +156,21 @@ def get_forecast_comment():
 
 @app.route('/')
 def index():
-    dht_data = get_dht()
-    weather_livedoor = get_weather_livedoor()
-    forecast_comment = get_forecast_comment()
+    try:
+        dht_data = get_dht()
+        weather_livedoor = get_weather_livedoor()
+        forecast_comment = get_forecast_comment()
 
-    return render_template('template.html',
-                        dht_data=dht_data,
-                        weather_data=weather_livedoor,
-                        forecast_comment=forecast_comment,
-                        date=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        return render_template('template.html',
+                            dht_data=dht_data,
+                            weather_data=weather_livedoor,
+                            forecast_comment=forecast_comment,
+                            date=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    except Exception as e:
+        logger.error(f"リクエスト処理エラー: {str(e)}", exc_info=True)
+        return f"エラーが発生しました: {str(e)}", 500
 
 
 if __name__ == '__main__':
-    try:
-        logger.info("アプリケーション開始")
-        app.run(debug=True, host='0.0.0.0')
-    except Exception as e:
-        logger.error(f"アプリケーション実行エラー: {str(e)}", exc_info=True)
+    logger.info("アプリケーション開始")
+    app.run(debug=True, host='0.0.0.0')
