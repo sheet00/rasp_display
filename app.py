@@ -2,6 +2,8 @@ from flask import Flask, render_template
 import os
 import datetime
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from dotenv import load_dotenv
 import pymysql
 from icecream import ic
@@ -14,6 +16,9 @@ import json
 load_dotenv()
 app = Flask(__name__, static_folder='static')
 
+# HTTPリクエスト設定
+REQUEST_TIMEOUT = 10  # 秒
+
 # ログ設定
 logging.basicConfig(
     level=logging.INFO,
@@ -24,6 +29,24 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# リトライ設定付きHTTPセッション作成
+def create_retry_session():
+    retry_strategy = Retry(
+        total=3,  # 最大3回リトライ
+        backoff_factor=2,  # 指数関数バックオフ (2^n秒)
+        status_forcelist=[429, 500, 502, 503, 504],  # リトライするHTTPステータス
+        allowed_methods=["HEAD", "GET", "OPTIONS"],  # リトライ対象メソッド
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session = requests.Session()
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    session.timeout = REQUEST_TIMEOUT  # デフォルトタイムアウト設定
+    return session
+
+# グローバルセッション
+http_session = create_retry_session()
 
 
 def get_dht():
@@ -74,7 +97,7 @@ def get_weather_livedoor():
     city_code = os.environ.get('CITY_CODE')
     base_url = "https://weather.tsukumijima.net/api/forecast"
     url = f"{base_url}?city={city_code}"
-    response = requests.get(url)
+    response = http_session.get(url)
     data = response.json()
 
     ic(data['location'])
@@ -121,7 +144,7 @@ def get_weather_open():
         "lang": "ja",
         "units": "metric"
     }
-    response = requests.get(base_url, params=params)
+    response = http_session.get(base_url, params=params)
 
     if response.status_code == 200:
         data = response.json()
@@ -144,7 +167,7 @@ def get_forecast_comment():
     """
 
     url = os.environ.get('WEATHER_DESCRIPTION_URL')
-    response = requests.get(url)
+    response = http_session.get(url)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
     forecast_comment = soup.find('div', class_='forecast-comment')
@@ -173,4 +196,4 @@ def index():
 
 if __name__ == '__main__':
     logger.info("アプリケーション開始")
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5000)
