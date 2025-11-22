@@ -146,20 +146,31 @@ def get_weather_open():
     }
     response = http_session.get(base_url, params=params)
 
-    if response.status_code == 200:
-        data = response.json()
-        # JSTに変換
-        for item in data["list"]:
-            dt_utc = datetime.datetime.fromtimestamp(item['dt'], tz=datetime.timezone.utc)
-            dt_jst = dt_utc + datetime.timedelta(hours=9)
-            item['dt_txt'] = dt_jst.strftime('%Y-%m-%d %H:%M:%S')
+    # レスポンス確認
+    logger.info(f"天気API (OpenWeather) レスポンスステータス: {response.status_code}")
 
-        ic(data["city"])
-        # ic(data['list'][0])
-
-        return data
-    else:
+    if response.status_code != 200:
+        logger.error(f"天気API (OpenWeather) エラー - ステータス: {response.status_code}, レスポンス: {response.text[:500]}")
         return {}
+
+    # JSON パース
+    try:
+        data = response.json()
+    except json.JSONDecodeError as e:
+        logger.error(f"天気API (OpenWeather) JSON decode エラー: {e}")
+        logger.error(f"レスポンステキスト: {response.text[:500]}")
+        return {}
+
+    # JSTに変換
+    for item in data["list"]:
+        dt_utc = datetime.datetime.fromtimestamp(item['dt'], tz=datetime.timezone.utc)
+        dt_jst = dt_utc + datetime.timedelta(hours=9)
+        item['dt_txt'] = dt_jst.strftime('%Y-%m-%d %H:%M:%S')
+
+    ic(data["city"])
+    # ic(data['list'][0])
+
+    return data
 
 def get_forecast_comment():
     """
