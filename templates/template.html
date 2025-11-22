@@ -33,7 +33,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <span>{{ forecast.telop }} {{ forecast.custom_date_label }}</span>
             {% if loop.index == 1 and recent_weather.temp %}
-            <span class="text-end">{{ recent_weather.dt_jst.strftime('%H:%M') }}予想: {{ recent_weather.temp|round(1)
+            <span class="text-end">現在 {{ recent_weather.temp|round(1)
               }}°C</span>
             {% endif %}
           </div>
