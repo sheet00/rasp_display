@@ -32,6 +32,12 @@ logger = logging.getLogger(__name__)
 
 # リトライ設定付きHTTPセッション作成
 def create_retry_session():
+    """
+    リトライ設定付きHTTPセッションを作成
+
+    Returns:
+        requests.Session: リトライ機能が設定されたHTTPセッション
+    """
     retry_strategy = Retry(
         total=3,  # 最大3回リトライ
         backoff_factor=2,  # 指数関数バックオフ (2^n秒)
@@ -51,7 +57,11 @@ http_session = create_retry_session()
 
 def get_dht():
     """
-    部屋の温度取得
+    部屋の温度・湿度をデータベースから取得
+
+    Returns:
+        dict: {'temp': float, 'hum': float, 'created_at': datetime} 形式
+              データ取得失敗時は各値がNone
     """
     conn = None
     try:
@@ -81,10 +91,23 @@ def get_dht():
 
 def get_weather_livedoor():
     """
-    お天気情報取得 livedoor
+    Livedoor天気APIから天気予報を取得
+
+    Returns:
+        dict: 天気予報データ（forecasts, location等を含む）
+              エラー時は空の辞書 {}
     """
 
     def custom_date_label(forecast):
+        """
+        予報データから日本語の日付ラベルを生成
+
+        Args:
+            forecast (dict): 予報データ
+
+        Returns:
+            str: '22日(金)' のような形式の日付ラベル
+        """
         japanese_days = ["日","月", "火", "水", "木", "金", "土"]
         target_date = datetime.datetime.strptime(forecast['date'], '%Y-%m-%d')
         day_of_week = target_date.strftime('%w')
@@ -116,7 +139,7 @@ def get_weather_open():
     直近の予測気温取得 (OpenWeather)
 
     Returns:
-        dict: {'dt_txt_jst': '2025-11-22 15:00:00', 'temp': 17.86} 形式
+        dict: {'dt_jst': datetime, 'temp': 17.86} 形式
               エラー時は空の辞書 {}
     """
     ic("-"*100)
@@ -169,7 +192,11 @@ def get_weather_open():
 
 def get_forecast_comment():
     """
-    ウェザーニュース最新見解取得
+    ウェザーニュースから最新の天気解説を取得
+
+    Returns:
+        str: 天気予報の解説文
+             取得失敗時は 'テキストが見つかりませんでした'
     """
 
     url = os.environ.get('WEATHER_DESCRIPTION_URL')
@@ -185,6 +212,13 @@ def get_forecast_comment():
 
 @app.route('/')
 def index():
+    """
+    メインページのルートハンドラ
+
+    Returns:
+        str: レンダリングされたHTMLテンプレート
+             エラー時は500エラーとエラーメッセージ
+    """
     try:
         dht_data = get_dht()
         weather_data = get_weather_livedoor()
